@@ -144,32 +144,38 @@ public class Inventory
                           .orElse(null);
     }
 
-    // TODO: Use fuzzy search here
     public ObservableList<Product> lookupProduct(String productName)
     {
         return allProducts.stream()
                           .filter(product -> product.getName()
-                                                    .equals(productName))
+                                                    .toLowerCase()
+                                                    .contains(productName.toLowerCase()))
                           .collect(Collectors.toCollection(FXCollections::observableArrayList));
     }
 
-    // TODO: Possibly return a copy of the list instead
     public ObservableList<Product> getAllProducts()
     {
         return allProducts;
     }
 
-    // TODO: Implement validation
     public void addProduct(Product newProduct)
     {
-        newProduct.setId(productCounter);
-        productCounter++;
+        internalAddProduct(productCounter++, newProduct);
+    }
 
+    private void internalAddProduct(int productId, Product newProduct)
+    {
+        newProduct.setId(productId);
         allProducts.add(newProduct);
     }
 
+    public void updateProduct(int index, Product newProduct)
+    {
+
+    }
+
     // TODO: Implement validation
-    public void updateProduct(int productId, Product newProduct)
+    public void updateProductById(int productId, Product newProduct)
     {
         Product product = lookupProduct(productId);
         if (product == null)
@@ -182,10 +188,18 @@ public class Inventory
         product.setMax(newProduct.getMax());
     }
 
-    // TODO: Remove by id instead
     public boolean deleteProduct(Product selectedProduct)
     {
         return allProducts.remove(selectedProduct);
+    }
+
+    public boolean deleteProductById(int productId)
+    {
+        Product product = lookupProduct(productId);
+        if (product != null)
+            return deleteProduct(product);
+
+        return false;
     }
 
     /* Singleton implementation below */

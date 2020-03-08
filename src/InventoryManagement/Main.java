@@ -22,7 +22,7 @@ public class Main extends Application
         URL mainViewPath = getClass().getResource("Views/MainView.fxml");
 
         ViewManager viewManager = ViewManager.getInstance();
-        viewManager.initialize(primaryStage, mainViewPath, "Inventory Management", 1134, 446);
+        viewManager.initialize(primaryStage, mainViewPath, "Inventory Management", 1140, 446);
 
         // Add views
         viewManager.addView(ViewManager.ViewNames.PartAdd, "PartAddView");

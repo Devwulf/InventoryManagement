@@ -2,6 +2,7 @@ package InventoryManagement.Controllers;
 
 import InventoryManagement.Data.Inventory;
 import InventoryManagement.Models.Part;
+import InventoryManagement.Models.Product;
 import InventoryManagement.Services.ViewManager;
 import InventoryManagement.Utils.*;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
@@ -70,6 +71,16 @@ public class MainController extends BaseController
         }
     }
 
+    private class ProductsWrapper
+    {
+        public ObservableList<Product> products;
+
+        public ProductsWrapper(ObservableList<Product> products)
+        {
+            this.products = products;
+        }
+    }
+
     @FXML private TextField partSearchField;
     @FXML private ChoiceBox<SearchFilter> partSearchFilter;
 
@@ -91,16 +102,71 @@ public class MainController extends BaseController
     // The part Id for the clicked row
     private int selectedPartId = 0;
 
+    @FXML private TextField productSearchField;
+    @FXML private ChoiceBox<SearchFilter> productSearchFilter;
+
+    @FXML private Label productIdSort;
+    @FXML private Label productNameSort;
+    @FXML private Label productInvSort;
+    @FXML private Label productPriceSort;
+
+    @FXML private GridPane productsGrid;
+    private HashMap<Integer, GridPane> productRows = new HashMap<>();
+
+    private SortColumn productSort = SortColumn.SortByIdAsc;
+
+    // The product id that was recently searched
+    private int searchedProductId = 0;
+    // The product name that was recently searched
+    private String searchedProductName = "";
+
+    // The product Id for the clicked row
+    private int selectedProductId = 0;
+
     @FXML
     public void initialize()
     {
         populatePartsGrid();
+        populateProductsGrid();
 
         // Fill in searchFilter Choice Box and set default value
         partSearchFilter.getItems()
                         .setAll(SearchFilter.values());
         partSearchFilter.setValue(SearchFilter.Id);
+
+        productSearchFilter.getItems()
+                           .setAll(SearchFilter.values());
+        productSearchFilter.setValue(SearchFilter.Id);
     }
+
+    // These two methods are for hovering over the column headers
+    @FXML
+    public void handleHoverEnter()
+    {
+        ViewManager.getInstance()
+                   .setCursor(Cursor.HAND);
+    }
+
+    @FXML
+    public void handleHoverExit()
+    {
+        ViewManager.getInstance()
+                   .setCursor(Cursor.DEFAULT);
+    }
+
+    @FXML
+    public void handleExit()
+    {
+        System.exit(0);
+    }
+
+    public void reloadView()
+    {
+        populatePartsGrid();
+        populateProductsGrid();
+    }
+
+    // Parts
 
     @FXML
     public void handlePartSearch()
@@ -208,21 +274,6 @@ public class MainController extends BaseController
         populatePartsGrid();
     }
 
-    // These two methods are for hovering over the column headers
-    @FXML
-    public void handleHoverEnter()
-    {
-        ViewManager.getInstance()
-                   .setCursor(Cursor.HAND);
-    }
-
-    @FXML
-    public void handleHoverExit()
-    {
-        ViewManager.getInstance()
-                   .setCursor(Cursor.DEFAULT);
-    }
-
     @FXML
     public void handleAddPart()
     {
@@ -274,18 +325,6 @@ public class MainController extends BaseController
         selectedPartId = id;
         partRows.get(selectedPartId)
                 .setStyle(Constants.SELECTED_ROW);
-    }
-
-    @FXML
-    public void handleExit()
-    {
-        System.exit(0);
-    }
-
-    public void reloadView()
-    {
-        populatePartsGrid();
-        // eventually populateProductsGrid();
     }
 
     // For sorting columns
@@ -476,6 +515,361 @@ public class MainController extends BaseController
             partsGrid.addRow(i, grid);
             partsGrid.getRowConstraints()
                      .add(rowConstraints);
+        }
+    }
+
+    // Products
+
+    @FXML
+    public void handleProductSearch()
+    {
+        String input = productSearchField.getText();
+        SearchFilter filter = productSearchFilter.getValue();
+        if (filter == SearchFilter.Id)
+        {
+            try
+            {
+                int id = Integer.parseInt(input);
+                filterByProductId(id);
+            }
+            catch (NumberFormatException e)
+            {
+                e.printStackTrace();
+
+                ViewManager.getInstance()
+                           .showWarningPopup("Only numbers are allowed when searching by id.");
+            }
+        }
+        else
+        {
+            filterByProductName(input);
+        }
+    }
+
+    private void filterByProductId(int id)
+    {
+        searchedProductName = "";
+        searchedProductId = id;
+        populateProductsGrid();
+    }
+
+    private void filterByProductName(String name)
+    {
+        searchedProductName = name;
+        searchedProductId = 0;
+        populateProductsGrid();
+    }
+
+    @FXML
+    public void handleClearProductSearch()
+    {
+        searchedProductName = "";
+        searchedProductId = 0;
+        productSearchField.setText("");
+
+        populateProductsGrid();
+    }
+
+    @FXML
+    public void handleSortProductById()
+    {
+        if (productSort != SortColumn.SortByIdAsc &&
+                productSort != SortColumn.SortByIdDesc)
+            productSort = SortColumn.SortByIdAsc;
+        else if (productSort == SortColumn.SortByIdAsc)
+            productSort = SortColumn.SortByIdDesc;
+        else
+            productSort = SortColumn.None;
+
+        populateProductsGrid();
+    }
+
+    @FXML
+    public void handleSortProductByName()
+    {
+        if (productSort != SortColumn.SortByNameAsc &&
+                productSort != SortColumn.SortByNameDesc)
+            productSort = SortColumn.SortByNameAsc;
+        else if (productSort == SortColumn.SortByNameAsc)
+            productSort = SortColumn.SortByNameDesc;
+        else
+            productSort = SortColumn.None;
+
+        populateProductsGrid();
+    }
+
+    @FXML
+    public void handleSortProductByInv()
+    {
+        if (productSort != SortColumn.SortByInvAsc &&
+                productSort != SortColumn.SortByInvDesc)
+            productSort = SortColumn.SortByInvAsc;
+        else if (productSort == SortColumn.SortByInvAsc)
+            productSort = SortColumn.SortByInvDesc;
+        else
+            productSort = SortColumn.None;
+
+        populateProductsGrid();
+    }
+
+    @FXML
+    public void handleSortProductByPrice()
+    {
+        if (productSort != SortColumn.SortByPriceAsc &&
+                productSort != SortColumn.SortByPriceDesc)
+            productSort = SortColumn.SortByPriceAsc;
+        else if (productSort == SortColumn.SortByPriceAsc)
+            productSort = SortColumn.SortByPriceDesc;
+        else
+            productSort = SortColumn.None;
+
+        populateProductsGrid();
+    }
+
+    @FXML
+    public void handleAddProduct()
+    {
+        ViewManager.getInstance()
+                   .loadView(ViewManager.ViewNames.ProductAdd, "Add Product");
+    }
+
+    @FXML
+    public void handleModifyProduct()
+    {
+        if (selectedProductId <= 0)
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("No selected product to be modified!");
+            return;
+        }
+
+        /*
+        ProductModifyController controller = ViewManager.getInstance()
+                                                     .loadView(ViewManager.ViewNames.ProductModify, "Modify Product");
+        controller.initialize(selectedProductId);
+
+         */
+    }
+
+    @FXML
+    public void handleDeleteProduct()
+    {
+        if (selectedProductId <= 0)
+            return;
+
+        ViewManager.getInstance()
+                   .showConfirmPopup("Are you sure you want to delete this product?", () ->
+                   {
+                       Inventory.getInstance()
+                                .deleteProductById(selectedProductId);
+
+                       ViewManager.getInstance()
+                                  .reloadMainView();
+                   });
+    }
+
+    // This is not referenced from FXML directly
+    public void handleSelectProduct(int id)
+    {
+        // Means another row is currently selected, turn its
+        // background color to normal
+        if (selectedProductId > 0)
+            productRows.get(selectedProductId)
+                       .setStyle(Constants.DESELECTED_ROW);
+
+        selectedProductId = id;
+        productRows.get(selectedProductId)
+                   .setStyle(Constants.SELECTED_ROW);
+    }
+
+    // For sorting columns
+    private void sortProductById(ProductsWrapper productWrapper)
+    {
+        Comparator<Product> comparator;
+        if (productSort == SortColumn.SortByIdAsc)
+        {
+            // update visual
+            productIdSort.setText(Constants.UP_ARROW_CHAR); // up arrow unicode
+            comparator = Comparator.comparingInt(Product::getId);
+        }
+        else if (productSort == SortColumn.SortByIdDesc)
+        {
+            productIdSort.setText(Constants.DOWN_ARROW_CHAR); // down arrow unicode
+            comparator = Comparator.comparingInt(Product::getId)
+                                   .reversed();
+        }
+        else
+        {
+            // we're not supposed to sort by this column
+            productIdSort.setText(Constants.FILTER_CHAR); // upside down A unicode
+            return;
+        }
+
+        productWrapper.products = productWrapper.products.stream()
+                                                         .sorted(comparator)
+                                                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
+    private void sortProductByName(ProductsWrapper productWrapper)
+    {
+        Comparator<Product> comparator;
+        if (productSort == SortColumn.SortByNameAsc)
+        {
+            productNameSort.setText(Constants.UP_ARROW_CHAR);
+            comparator = Comparator.comparing(Product::getName);
+        }
+        else if (productSort == SortColumn.SortByNameDesc)
+        {
+            productNameSort.setText(Constants.DOWN_ARROW_CHAR);
+            comparator = Comparator.comparing(Product::getName)
+                                   .reversed();
+        }
+        else
+        {
+            productNameSort.setText(Constants.FILTER_CHAR);
+            return;
+        }
+
+        productWrapper.products = productWrapper.products.stream()
+                                                         .sorted(comparator)
+                                                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
+    private void sortProductByInv(ProductsWrapper productWrapper)
+    {
+        Comparator<Product> comparator;
+        if (productSort == SortColumn.SortByInvAsc)
+        {
+            productInvSort.setText(Constants.UP_ARROW_CHAR);
+            comparator = Comparator.comparingInt(Product::getStock);
+        }
+        else if (productSort == SortColumn.SortByInvDesc)
+        {
+            productInvSort.setText(Constants.DOWN_ARROW_CHAR);
+            comparator = Comparator.comparingInt(Product::getStock)
+                                   .reversed();
+        }
+        else
+        {
+            productInvSort.setText(Constants.FILTER_CHAR);
+            return;
+        }
+
+        productWrapper.products = productWrapper.products.stream()
+                                                         .sorted(comparator)
+                                                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
+    private void sortProductByPrice(ProductsWrapper productWrapper)
+    {
+        Comparator<Product> comparator;
+        if (productSort == SortColumn.SortByPriceAsc)
+        {
+            productPriceSort.setText(Constants.UP_ARROW_CHAR);
+            comparator = Comparator.comparing(Product::getPrice);
+        }
+        else if (productSort == SortColumn.SortByPriceDesc)
+        {
+            productPriceSort.setText(Constants.DOWN_ARROW_CHAR);
+            comparator = Comparator.comparing(Product::getPrice)
+                                   .reversed();
+        }
+        else
+        {
+            productPriceSort.setText(Constants.FILTER_CHAR);
+            return;
+        }
+
+        productWrapper.products = productWrapper.products.stream()
+                                                         .sorted(comparator)
+                                                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
+    private void populateProductsGrid()
+    {
+        ObservableList<Product> products;
+        if (!searchedProductName.isEmpty())
+            products = Inventory.getInstance()
+                                .lookupProduct(searchedProductName);
+        else if (searchedProductId > 0)
+        {
+            Product product = Inventory.getInstance()
+                                       .lookupProduct(searchedProductId);
+            if (product != null)
+                products = FXCollections.observableArrayList(product);
+            else
+                products = FXCollections.observableArrayList();
+        }
+        else
+            products = Inventory.getInstance()
+                                .getAllProducts();
+
+        populateProductsGrid(products);
+    }
+
+    private void populateProductsGrid(ObservableList<Product> products)
+    {
+        ProductsWrapper wrapper = new ProductsWrapper(products);
+
+        // Each of these check if it's supposed to sort
+        sortProductById(wrapper);
+        sortProductByName(wrapper);
+        sortProductByInv(wrapper);
+        sortProductByPrice(wrapper);
+
+        // Clear current grid
+        productsGrid.getChildren()
+                    .clear();
+        productsGrid.getRowConstraints()
+                    .clear();
+
+        // Setting default configs
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setMinHeight(28);
+        rowConstraints.setPrefHeight(28);
+        rowConstraints.setMaxHeight(28);
+        rowConstraints.setVgrow(Priority.SOMETIMES);
+
+        // The defaults are good enough for this
+        TextBuilder textBuilder = new TextBuilder();
+
+        HBoxBuilder hBoxBuilder = new HBoxBuilder();
+        hBoxBuilder.setPrefHeight(28)
+                   .setPadding(new Insets(5))
+                   .setStyle(Constants.LINE_BELOW);
+
+        GridPaneBuilder gridPaneBuilder = new GridPaneBuilder();
+        gridPaneBuilder.setStyle(Constants.DESELECTED_ROW);
+
+        // Filling in the grid pane
+        for (int i = 0; i < wrapper.products.size(); i++)
+        {
+            Product product = wrapper.products.get(i);
+
+            Text id = textBuilder.setText(Integer.toString(product.getId()))
+                                 .build();
+            HBox idCell = hBoxBuilder.build(id);
+
+            Text name = textBuilder.setText(product.getName())
+                                   .build();
+            HBox nameCell = hBoxBuilder.build(name);
+
+            Text stock = textBuilder.setText(Integer.toString(product.getStock()))
+                                    .build();
+            HBox stockCell = hBoxBuilder.build(stock);
+
+            Text price = textBuilder.setText("$" + String.format("%.2f", product.getPrice())) // 2 decimal places
+                                    .build();
+            HBox priceCell = hBoxBuilder.build(price);
+
+            GridPane grid = gridPaneBuilder.build();
+            grid.addRow(0, idCell, nameCell, stockCell, priceCell);
+            grid.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> handleSelectProduct(product.getId()));
+            productRows.put(product.getId(), grid);
+
+            productsGrid.addRow(i, grid);
+            productsGrid.getRowConstraints()
+                        .add(rowConstraints);
         }
     }
 }
