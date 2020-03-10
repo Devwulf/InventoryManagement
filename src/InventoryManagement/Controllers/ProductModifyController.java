@@ -27,7 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class ProductAddController extends BaseController
+public class ProductModifyController extends BaseController
 {
     private class PartsWrapper
     {
@@ -39,6 +39,7 @@ public class ProductAddController extends BaseController
         }
     }
 
+    @FXML private TextField idField;
     @FXML private TextField nameField;
     @FXML private TextField invField;
     @FXML private TextField priceField;
@@ -78,8 +79,7 @@ public class ProductAddController extends BaseController
     private ObservableList<Part> localPartsList;
     private ObservableList<Part> localProductPartsList;
 
-    @FXML
-    public void initialize()
+    public void initialize(int productId)
     {
         // Setting the textfield styles for validation
         nameField.textProperty()
@@ -156,12 +156,21 @@ public class ProductAddController extends BaseController
                         .setAll(Enums.SearchFilter.values());
         partSearchFilter.setValue(Enums.SearchFilter.Id);
 
+        Product product = Inventory.getInstance().lookupProduct(productId);
+        
+        idField.setText(Integer.toString(product.getId()));
+        nameField.setText(product.getName());
+        invField.setText(Integer.toString(product.getStock()));
+        priceField.setText(Double.toString(product.getPrice()));
+        maxField.setText(Integer.toString(product.getMax()));
+        minField.setText(Integer.toString(product.getMin()));
+
         // initialize only once
         // creates a copy of the real parts list
         // Note: this won't create copies of the objects in the real list
         localPartsList = FXCollections.observableArrayList(Inventory.getInstance()
                                                                     .getAllParts());
-        localProductPartsList = FXCollections.observableArrayList();
+        localProductPartsList = FXCollections.observableArrayList(product.getAllAssociatedParts());
 
         populatePartsGrid();
         populateProductPartsGrid();
@@ -198,20 +207,21 @@ public class ProductAddController extends BaseController
 
         try
         {
+            int id = Integer.parseInt(idField.getText());
             String name = nameField.getText();
             int stock = Integer.parseInt(invField.getText());
             double price = Double.parseDouble(priceField.getText());
             int max = Integer.parseInt(maxField.getText());
             int min = Integer.parseInt(minField.getText());
 
-            Product product = new Product(0, name, price, stock, min, max);
+            Product product = new Product(id, name, price, stock, min, max);
 
             product.clearAllAssociatedParts();
             for (Part part : localProductPartsList)
                 product.addAssociatedPart(part);
 
             Inventory.getInstance()
-                     .addProduct(product);
+                     .updateProductById(id, product);
             Inventory.getInstance()
                      .saveChanges();
 

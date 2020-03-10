@@ -13,63 +13,245 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="446" prefWidth="1140.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.Controllers.MainController">
+
+<VBox prefWidth="1250.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.Controllers.ProductModifyController">
    <children>
-      <HBox prefHeight="108.0" prefWidth="1134.0">
+      <GridPane hgap="50.0" style="-fx-border-style: solid; -fx-border-radius: 10px; -fx-border-color: #A5A5A5;">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <Label text="Inventory Management System" textFill="#17355d">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets bottom="43.0" left="30.0" right="30.0" top="43.0" />
-         </padding>
-      </HBox>
-      <GridPane hgap="20.0" prefHeight="251.0" prefWidth="1078.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="50" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="50" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="268.0" prefHeight="268.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <VBox.margin>
-            <Insets bottom="15.0" left="30.0" right="30.0" />
-         </VBox.margin>
-         <children>
-            <VBox maxWidth="529.0" minWidth="529.0" prefHeight="200.0" prefWidth="529.0" style="-fx-border-style: solid; -fx-border-radius: 12px; -fx-border-color: #A5A5A5;">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="444.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="1024.0" spacing="30.0">
+                     <children>
+                        <Label text="Modify Product">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="30.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="25.0" left="12.0" right="12.0" top="25.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="70" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="ID">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <TextField fx:id="idField" disable="true" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Auto Gen - Disabled" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="12.0" right="12.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                              <Label text="Name">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="257.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <TextField fx:id="nameField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Part Name" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="12.0" right="12.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="60.0" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <children>
+                              <Label text="Inv">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="257.0" layoutY="60.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <TextField fx:id="invField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Inv" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="12.0" right="12.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                              <Label text="Price/Cost">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="257.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="5.0" left="12.0" right="12.0" top="5.0" />
+                           </padding>
+                           <children>
+                              <TextField fx:id="priceField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Price/Cost" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="35" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="35" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Max">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <padding>
+                              <Insets bottom="5.0" left="12.0" right="12.0" top="5.0" />
+                           </padding>
+                           <children>
+                              <TextField fx:id="maxField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Max" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Label text="Min">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="216.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+                           <padding>
+                              <Insets bottom="5.0" left="12.0" right="12.0" top="5.0" />
+                           </padding>
+                           <children>
+                              <TextField fx:id="minField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Min" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                <children>
                   <GridPane prefHeight="61.0" prefWidth="522.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="20.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="35.0" />
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="55.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="15.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="32.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="32.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <Label text="Parts">
-                           <font>
-                              <Font name="System Bold" size="17.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="partSearchField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handlePartSearch" promptText="Search" style="-fx-background-radius: 3px 0 0 3px;" GridPane.columnIndex="1">
+                        <TextField fx:id="partSearchField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handlePartSearch" promptText="Search" style="-fx-background-radius: 3px 0 0 3px;">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
                         </TextField>
-                        <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClearPartSearch" style="-fx-background-radius: 0 3px 3px 0;" text="×" textOverrun="CLIP" GridPane.columnIndex="2" />
-                        <ChoiceBox fx:id="partSearchFilter" maxHeight="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="3">
+                        <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClearPartSearch" style="-fx-background-radius: 0 3px 3px 0;" text="×" textOverrun="CLIP" GridPane.columnIndex="1" />
+                        <ChoiceBox fx:id="partSearchFilter" maxHeight="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </ChoiceBox>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePartSearch" text="Search" GridPane.columnIndex="4">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePartSearch" text="Search" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
@@ -80,27 +262,27 @@
                      </padding>
                   </GridPane>
                   <GridPane>
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <VBox.margin>
                         <Insets left="15.0" right="15.0" />
                      </VBox.margin>
                      <children>
                         <GridPane onMouseClicked="#handleSortPartById" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
                                  <padding>
@@ -224,273 +406,7 @@
                         <Insets bottom="10.0" left="15.0" right="15.0" />
                      </VBox.margin>
                      <content>
-                        <GridPane fx:id="partsGrid">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="28.0" minHeight="28.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ffffff;">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints maxHeight="28.0" minHeight="28.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" maxHeight="28.0" minHeight="28.0" prefHeight="28.0">
-                                       <padding>
-                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                       </padding>
-                                       <children>
-                                          <Label text="1" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" GridPane.columnIndex="1">
-                                       <padding>
-                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                       </padding>
-                                       <children>
-                                          <Label text="Part 1" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" layoutX="132.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" GridPane.columnIndex="2">
-                                       <padding>
-                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                       </padding>
-                                       <children>
-                                          <Label text="5" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" layoutX="254.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" GridPane.columnIndex="3">
-                                       <padding>
-                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                       </padding>
-                                       <children>
-                                          <Label text="\$5.00" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
-                  <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="30.0" prefHeight="40.0" spacing="15.0">
-                     <VBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </VBox.margin>
-                     <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleAddPart" prefWidth="92.0" text="Add">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleModifyPart" prefWidth="92.0" text="Modify">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="117.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleDeletePart" prefWidth="92.0" text="Delete">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox layoutX="10.0" layoutY="10.0" maxWidth="529.0" minWidth="529.0" prefHeight="200.0" prefWidth="529.0" style="-fx-border-style: solid; -fx-border-radius: 12px; -fx-border-color: #A5A5A5;" GridPane.columnIndex="1">
-               <children>
-                  <GridPane prefHeight="61.0" prefWidth="522.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="20.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="35.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="15.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="32.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Label text="Products">
-                           <font>
-                              <Font name="System Bold" size="17.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="productSearchField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Search" style="-fx-background-radius: 3px 0 0 3px;" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </TextField>
-                        <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClearProductSearch" style="-fx-background-radius: 0 3px 3px 0;" text="×" textOverrun="CLIP" GridPane.columnIndex="2" />
-                        <ChoiceBox fx:id="productSearchFilter" maxHeight="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="3">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </ChoiceBox>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleProductSearch" text="Search" GridPane.columnIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                     <padding>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                     </padding>
-                  </GridPane>
-                  <GridPane>
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <VBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </VBox.margin>
-                     <children>
-                        <GridPane onMouseClicked="#handleSortProductById" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label text="Product ID">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label fx:id="productIdSort" text="∀" textOverrun="CLIP" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </GridPane>
-                        <GridPane layoutX="10.0" layoutY="10.0" onMouseClicked="#handleSortProductByName" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;" GridPane.columnIndex="1">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label text="Product Name">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label fx:id="productNameSort" text="∀" textOverrun="CLIP" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </GridPane>
-                        <GridPane layoutX="134.0" layoutY="10.0" onMouseClicked="#handleSortProductByInv" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;" GridPane.columnIndex="2">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label text="Inventory Level">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label fx:id="productInvSort" text="∀" textOverrun="CLIP" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </GridPane>
-                        <GridPane layoutX="259.0" layoutY="10.0" onMouseClicked="#handleSortProductByPrice" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;" GridPane.columnIndex="3">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label text="Price per Unit">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                 <padding>
-                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                 </padding>
-                                 <children>
-                                    <Label fx:id="productPriceSort" text="∀" textOverrun="CLIP" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </GridPane>
-                     </children>
-                  </GridPane>
-                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="86.0" minHeight="86.0" prefHeight="86.0" style="-fx-background-color: transparent; -fx-background: #ffffff;">
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="15.0" right="15.0" />
-                     </VBox.margin>
-                     <content>
-                        <GridPane fx:id="productsGrid">
+                        <GridPane fx:id="partsGrid" style="-fx-border-style: solid; -fx-border-width: 0 0 1px 0; -fx-border-color: #dee2e6;">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
@@ -522,7 +438,7 @@
                                           <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                                        </padding>
                                        <children>
-                                          <Label text="Product 1" />
+                                          <Label text="Part 1" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" layoutX="132.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="2">
@@ -549,37 +465,237 @@
                   </ScrollPane>
                   <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="30.0" prefHeight="40.0" spacing="15.0">
                      <VBox.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets bottom="10.0" left="15.0" right="15.0" />
                      </VBox.margin>
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleAddProduct" prefWidth="92.0" text="Add">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleModifyProduct" prefWidth="92.0" text="Modify">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="117.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleDeleteProduct" prefWidth="92.0" text="Delete">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleAddPart" prefWidth="92.0" text="Add" />
                      </children>
+                  </HBox>
+                  <GridPane layoutX="25.0" layoutY="72.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <GridPane onMouseClicked="#handleSortProductPartById" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label text="Part ID">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label fx:id="productPartIdSort" text="∀" textOverrun="CLIP" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                        <GridPane layoutX="10.0" layoutY="10.0" onMouseClicked="#handleSortProductPartByName" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;" GridPane.columnIndex="1">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label text="Part Name">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label fx:id="productPartNameSort" text="∀" textOverrun="CLIP" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                        <GridPane layoutX="134.0" layoutY="10.0" onMouseClicked="#handleSortProductPartByInv" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;" GridPane.columnIndex="2">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label text="Inventory Level">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label fx:id="productPartInvSort" text="∀" textOverrun="CLIP" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                        <GridPane layoutX="259.0" layoutY="10.0" onMouseClicked="#handleSortProductPartByPrice" onMouseEntered="#handleHoverEnter" onMouseExited="#handleHoverExit" style="-fx-background-color: #DDDDDD;" GridPane.columnIndex="3">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="200.0">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label text="Price per Unit">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                 </padding>
+                                 <children>
+                                    <Label fx:id="productPartPriceSort" text="∀" textOverrun="CLIP" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" layoutX="25.0" layoutY="107.0" maxHeight="86.0" minHeight="86.0" prefHeight="86.0" style="-fx-background-color: transparent; -fx-background: #ffffff;">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="15.0" right="15.0" />
+                     </VBox.margin>
+                     <content>
+                        <GridPane fx:id="productPartsGrid">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="28.0" minHeight="28.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="28.0" minHeight="28.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" style="-fx-background-color: #FFFFFF;">
+                                       <padding>
+                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="1" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="1">
+                                       <padding>
+                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="Part 1" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="132.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="2">
+                                       <padding>
+                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="5" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="254.0" layoutY="10.0" maxHeight="28.0" minHeight="28.0" prefHeight="28.0" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="3">
+                                       <padding>
+                                          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="\$5.00" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+                  <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="203.0" maxHeight="40.0" minHeight="30.0" prefHeight="40.0" spacing="15.0">
+                     <children>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="92.0" minWidth="92.0" mnemonicParsing="false" onAction="#handleDeleteProductPart" prefWidth="92.0" text="Delete" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
          </children>
-      </GridPane>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <VBox.margin>
-            <Insets bottom="15.0" left="30.0" right="30.0" />
+            <Insets bottom="10.0" left="50.0" right="50.0" top="50.0" />
          </VBox.margin>
+      </GridPane>
+      <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="1024.0" spacing="10.0">
          <children>
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleExit" prefWidth="100.0" text="Exit" />
+            <Button fx:id="saveButton" maxHeight="1.7976931348623157E308" minWidth="80.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+            <Button fx:id="cancelButton" cancelButton="true" maxHeight="1.7976931348623157E308" minWidth="80.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
          </children>
+         <VBox.margin>
+            <Insets bottom="30.0" right="50.0" />
+         </VBox.margin>
       </HBox>
    </children>
 </VBox>

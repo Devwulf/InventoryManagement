@@ -28,37 +28,6 @@ import java.util.stream.Collectors;
 
 public class MainController extends BaseController
 {
-    public enum SearchFilter
-    {
-        Id("By Id"),
-        Name("By Name");
-
-        private String value;
-
-        SearchFilter(String value)
-        {
-            this.value = value;
-        }
-
-        public String toString()
-        {
-            return this.value;
-        }
-    }
-
-    public enum SortColumn
-    {
-        None,
-        SortByIdAsc,
-        SortByIdDesc,
-        SortByNameAsc,
-        SortByNameDesc,
-        SortByInvAsc,
-        SortByInvDesc,
-        SortByPriceAsc,
-        SortByPriceDesc
-    }
-
     // Since Java can't pass by reference,
     // this is needed
     private class PartsWrapper
@@ -82,7 +51,7 @@ public class MainController extends BaseController
     }
 
     @FXML private TextField partSearchField;
-    @FXML private ChoiceBox<SearchFilter> partSearchFilter;
+    @FXML private ChoiceBox<Enums.SearchFilter> partSearchFilter;
 
     @FXML private Label partIdSort;
     @FXML private Label partNameSort;
@@ -92,7 +61,7 @@ public class MainController extends BaseController
     @FXML private GridPane partsGrid;
     private HashMap<Integer, GridPane> partRows = new HashMap<>();
 
-    private SortColumn partSort = SortColumn.SortByIdAsc;
+    private Enums.SortColumn partSort = Enums.SortColumn.SortByIdAsc;
 
     // The part id that was recently searched
     private int searchedPartId = 0;
@@ -103,7 +72,7 @@ public class MainController extends BaseController
     private int selectedPartId = 0;
 
     @FXML private TextField productSearchField;
-    @FXML private ChoiceBox<SearchFilter> productSearchFilter;
+    @FXML private ChoiceBox<Enums.SearchFilter> productSearchFilter;
 
     @FXML private Label productIdSort;
     @FXML private Label productNameSort;
@@ -113,7 +82,7 @@ public class MainController extends BaseController
     @FXML private GridPane productsGrid;
     private HashMap<Integer, GridPane> productRows = new HashMap<>();
 
-    private SortColumn productSort = SortColumn.SortByIdAsc;
+    private Enums.SortColumn productSort = Enums.SortColumn.SortByIdAsc;
 
     // The product id that was recently searched
     private int searchedProductId = 0;
@@ -131,27 +100,27 @@ public class MainController extends BaseController
 
         // Fill in searchFilter Choice Box and set default value
         partSearchFilter.getItems()
-                        .setAll(SearchFilter.values());
-        partSearchFilter.setValue(SearchFilter.Id);
+                        .setAll(Enums.SearchFilter.values());
+        partSearchFilter.setValue(Enums.SearchFilter.Id);
 
         productSearchFilter.getItems()
-                           .setAll(SearchFilter.values());
-        productSearchFilter.setValue(SearchFilter.Id);
+                           .setAll(Enums.SearchFilter.values());
+        productSearchFilter.setValue(Enums.SearchFilter.Id);
     }
 
     // These two methods are for hovering over the column headers
     @FXML
     public void handleHoverEnter()
     {
-        ViewManager.getInstance()
-                   .setCursor(Cursor.HAND);
+        stage.getScene()
+             .setCursor(Cursor.HAND);
     }
 
     @FXML
     public void handleHoverExit()
     {
-        ViewManager.getInstance()
-                   .setCursor(Cursor.DEFAULT);
+        stage.getScene()
+             .setCursor(Cursor.DEFAULT);
     }
 
     @FXML
@@ -172,8 +141,8 @@ public class MainController extends BaseController
     public void handlePartSearch()
     {
         String input = partSearchField.getText();
-        SearchFilter filter = partSearchFilter.getValue();
-        if (filter == SearchFilter.Id)
+        Enums.SearchFilter filter = partSearchFilter.getValue();
+        if (filter == Enums.SearchFilter.Id)
         {
             try
             {
@@ -221,13 +190,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortPartById()
     {
-        if (partSort != SortColumn.SortByIdAsc &&
-                partSort != SortColumn.SortByIdDesc)
-            partSort = SortColumn.SortByIdAsc;
-        else if (partSort == SortColumn.SortByIdAsc)
-            partSort = SortColumn.SortByIdDesc;
+        if (partSort != Enums.SortColumn.SortByIdAsc &&
+                partSort != Enums.SortColumn.SortByIdDesc)
+            partSort = Enums.SortColumn.SortByIdAsc;
+        else if (partSort == Enums.SortColumn.SortByIdAsc)
+            partSort = Enums.SortColumn.SortByIdDesc;
         else
-            partSort = SortColumn.None;
+            partSort = Enums.SortColumn.None;
 
         populatePartsGrid();
     }
@@ -235,13 +204,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortPartByName()
     {
-        if (partSort != SortColumn.SortByNameAsc &&
-                partSort != SortColumn.SortByNameDesc)
-            partSort = SortColumn.SortByNameAsc;
-        else if (partSort == SortColumn.SortByNameAsc)
-            partSort = SortColumn.SortByNameDesc;
+        if (partSort != Enums.SortColumn.SortByNameAsc &&
+                partSort != Enums.SortColumn.SortByNameDesc)
+            partSort = Enums.SortColumn.SortByNameAsc;
+        else if (partSort == Enums.SortColumn.SortByNameAsc)
+            partSort = Enums.SortColumn.SortByNameDesc;
         else
-            partSort = SortColumn.None;
+            partSort = Enums.SortColumn.None;
 
         populatePartsGrid();
     }
@@ -249,13 +218,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortPartByInv()
     {
-        if (partSort != SortColumn.SortByInvAsc &&
-                partSort != SortColumn.SortByInvDesc)
-            partSort = SortColumn.SortByInvAsc;
-        else if (partSort == SortColumn.SortByInvAsc)
-            partSort = SortColumn.SortByInvDesc;
+        if (partSort != Enums.SortColumn.SortByInvAsc &&
+                partSort != Enums.SortColumn.SortByInvDesc)
+            partSort = Enums.SortColumn.SortByInvAsc;
+        else if (partSort == Enums.SortColumn.SortByInvAsc)
+            partSort = Enums.SortColumn.SortByInvDesc;
         else
-            partSort = SortColumn.None;
+            partSort = Enums.SortColumn.None;
 
         populatePartsGrid();
     }
@@ -263,17 +232,18 @@ public class MainController extends BaseController
     @FXML
     public void handleSortPartByPrice()
     {
-        if (partSort != SortColumn.SortByPriceAsc &&
-                partSort != SortColumn.SortByPriceDesc)
-            partSort = SortColumn.SortByPriceAsc;
-        else if (partSort == SortColumn.SortByPriceAsc)
-            partSort = SortColumn.SortByPriceDesc;
+        if (partSort != Enums.SortColumn.SortByPriceAsc &&
+                partSort != Enums.SortColumn.SortByPriceDesc)
+            partSort = Enums.SortColumn.SortByPriceAsc;
+        else if (partSort == Enums.SortColumn.SortByPriceAsc)
+            partSort = Enums.SortColumn.SortByPriceDesc;
         else
-            partSort = SortColumn.None;
+            partSort = Enums.SortColumn.None;
 
         populatePartsGrid();
     }
 
+    // TODO: Disable when another AddPart window is already open
     @FXML
     public void handleAddPart()
     {
@@ -307,6 +277,8 @@ public class MainController extends BaseController
                    {
                        Inventory.getInstance()
                                 .deletePartById(selectedPartId);
+                       Inventory.getInstance()
+                                .saveChanges();
 
                        ViewManager.getInstance()
                                   .reloadMainView();
@@ -320,7 +292,7 @@ public class MainController extends BaseController
         // background color to normal
         if (selectedPartId > 0)
             partRows.get(selectedPartId)
-                    .setStyle(Constants.DESELECTED_ROW);
+                    .setStyle(Constants.DESELECTED_ROW + Constants.LINE_BELOW);
 
         selectedPartId = id;
         partRows.get(selectedPartId)
@@ -331,13 +303,13 @@ public class MainController extends BaseController
     private void sortPartById(PartsWrapper partWrapper)
     {
         Comparator<Part> comparator;
-        if (partSort == SortColumn.SortByIdAsc)
+        if (partSort == Enums.SortColumn.SortByIdAsc)
         {
             // update visual
             partIdSort.setText(Constants.UP_ARROW_CHAR); // up arrow unicode
             comparator = Comparator.comparingInt(Part::getId);
         }
-        else if (partSort == SortColumn.SortByIdDesc)
+        else if (partSort == Enums.SortColumn.SortByIdDesc)
         {
             partIdSort.setText(Constants.DOWN_ARROW_CHAR); // down arrow unicode
             comparator = Comparator.comparingInt(Part::getId)
@@ -358,12 +330,12 @@ public class MainController extends BaseController
     private void sortPartByName(PartsWrapper partWrapper)
     {
         Comparator<Part> comparator;
-        if (partSort == SortColumn.SortByNameAsc)
+        if (partSort == Enums.SortColumn.SortByNameAsc)
         {
             partNameSort.setText(Constants.UP_ARROW_CHAR);
             comparator = Comparator.comparing(Part::getName);
         }
-        else if (partSort == SortColumn.SortByNameDesc)
+        else if (partSort == Enums.SortColumn.SortByNameDesc)
         {
             partNameSort.setText(Constants.DOWN_ARROW_CHAR);
             comparator = Comparator.comparing(Part::getName)
@@ -383,12 +355,12 @@ public class MainController extends BaseController
     private void sortPartByInv(PartsWrapper partWrapper)
     {
         Comparator<Part> comparator;
-        if (partSort == SortColumn.SortByInvAsc)
+        if (partSort == Enums.SortColumn.SortByInvAsc)
         {
             partInvSort.setText(Constants.UP_ARROW_CHAR);
             comparator = Comparator.comparingInt(Part::getStock);
         }
-        else if (partSort == SortColumn.SortByInvDesc)
+        else if (partSort == Enums.SortColumn.SortByInvDesc)
         {
             partInvSort.setText(Constants.DOWN_ARROW_CHAR);
             comparator = Comparator.comparingInt(Part::getStock)
@@ -408,12 +380,12 @@ public class MainController extends BaseController
     private void sortPartByPrice(PartsWrapper partWrapper)
     {
         Comparator<Part> comparator;
-        if (partSort == SortColumn.SortByPriceAsc)
+        if (partSort == Enums.SortColumn.SortByPriceAsc)
         {
             partPriceSort.setText(Constants.UP_ARROW_CHAR);
             comparator = Comparator.comparing(Part::getPrice);
         }
-        else if (partSort == SortColumn.SortByPriceDesc)
+        else if (partSort == Enums.SortColumn.SortByPriceDesc)
         {
             partPriceSort.setText(Constants.DOWN_ARROW_CHAR);
             comparator = Comparator.comparing(Part::getPrice)
@@ -454,6 +426,8 @@ public class MainController extends BaseController
 
     private void populatePartsGrid(ObservableList<Part> parts)
     {
+        selectedPartId = 0;
+
         PartsWrapper wrapper = new PartsWrapper(parts);
 
         // Each of these check if it's supposed to sort
@@ -480,11 +454,10 @@ public class MainController extends BaseController
 
         HBoxBuilder hBoxBuilder = new HBoxBuilder();
         hBoxBuilder.setPrefHeight(28)
-                   .setPadding(new Insets(5))
-                   .setStyle(Constants.LINE_BELOW);
+                   .setPadding(new Insets(5));
 
         GridPaneBuilder gridPaneBuilder = new GridPaneBuilder();
-        gridPaneBuilder.setStyle(Constants.DESELECTED_ROW);
+        gridPaneBuilder.setStyle(Constants.DESELECTED_ROW + Constants.LINE_BELOW);
 
         // Filling in the grid pane
         for (int i = 0; i < wrapper.parts.size(); i++)
@@ -524,8 +497,8 @@ public class MainController extends BaseController
     public void handleProductSearch()
     {
         String input = productSearchField.getText();
-        SearchFilter filter = productSearchFilter.getValue();
-        if (filter == SearchFilter.Id)
+        Enums.SearchFilter filter = productSearchFilter.getValue();
+        if (filter == Enums.SearchFilter.Id)
         {
             try
             {
@@ -573,13 +546,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortProductById()
     {
-        if (productSort != SortColumn.SortByIdAsc &&
-                productSort != SortColumn.SortByIdDesc)
-            productSort = SortColumn.SortByIdAsc;
-        else if (productSort == SortColumn.SortByIdAsc)
-            productSort = SortColumn.SortByIdDesc;
+        if (productSort != Enums.SortColumn.SortByIdAsc &&
+                productSort != Enums.SortColumn.SortByIdDesc)
+            productSort = Enums.SortColumn.SortByIdAsc;
+        else if (productSort == Enums.SortColumn.SortByIdAsc)
+            productSort = Enums.SortColumn.SortByIdDesc;
         else
-            productSort = SortColumn.None;
+            productSort = Enums.SortColumn.None;
 
         populateProductsGrid();
     }
@@ -587,13 +560,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortProductByName()
     {
-        if (productSort != SortColumn.SortByNameAsc &&
-                productSort != SortColumn.SortByNameDesc)
-            productSort = SortColumn.SortByNameAsc;
-        else if (productSort == SortColumn.SortByNameAsc)
-            productSort = SortColumn.SortByNameDesc;
+        if (productSort != Enums.SortColumn.SortByNameAsc &&
+                productSort != Enums.SortColumn.SortByNameDesc)
+            productSort = Enums.SortColumn.SortByNameAsc;
+        else if (productSort == Enums.SortColumn.SortByNameAsc)
+            productSort = Enums.SortColumn.SortByNameDesc;
         else
-            productSort = SortColumn.None;
+            productSort = Enums.SortColumn.None;
 
         populateProductsGrid();
     }
@@ -601,13 +574,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortProductByInv()
     {
-        if (productSort != SortColumn.SortByInvAsc &&
-                productSort != SortColumn.SortByInvDesc)
-            productSort = SortColumn.SortByInvAsc;
-        else if (productSort == SortColumn.SortByInvAsc)
-            productSort = SortColumn.SortByInvDesc;
+        if (productSort != Enums.SortColumn.SortByInvAsc &&
+                productSort != Enums.SortColumn.SortByInvDesc)
+            productSort = Enums.SortColumn.SortByInvAsc;
+        else if (productSort == Enums.SortColumn.SortByInvAsc)
+            productSort = Enums.SortColumn.SortByInvDesc;
         else
-            productSort = SortColumn.None;
+            productSort = Enums.SortColumn.None;
 
         populateProductsGrid();
     }
@@ -615,13 +588,13 @@ public class MainController extends BaseController
     @FXML
     public void handleSortProductByPrice()
     {
-        if (productSort != SortColumn.SortByPriceAsc &&
-                productSort != SortColumn.SortByPriceDesc)
-            productSort = SortColumn.SortByPriceAsc;
-        else if (productSort == SortColumn.SortByPriceAsc)
-            productSort = SortColumn.SortByPriceDesc;
+        if (productSort != Enums.SortColumn.SortByPriceAsc &&
+                productSort != Enums.SortColumn.SortByPriceDesc)
+            productSort = Enums.SortColumn.SortByPriceAsc;
+        else if (productSort == Enums.SortColumn.SortByPriceAsc)
+            productSort = Enums.SortColumn.SortByPriceDesc;
         else
-            productSort = SortColumn.None;
+            productSort = Enums.SortColumn.None;
 
         populateProductsGrid();
     }
@@ -643,12 +616,9 @@ public class MainController extends BaseController
             return;
         }
 
-        /*
         ProductModifyController controller = ViewManager.getInstance()
-                                                     .loadView(ViewManager.ViewNames.ProductModify, "Modify Product");
+                                                        .loadView(ViewManager.ViewNames.ProductModify, "Modify Product");
         controller.initialize(selectedProductId);
-
-         */
     }
 
     @FXML
@@ -662,6 +632,8 @@ public class MainController extends BaseController
                    {
                        Inventory.getInstance()
                                 .deleteProductById(selectedProductId);
+                       Inventory.getInstance()
+                                .saveChanges();
 
                        ViewManager.getInstance()
                                   .reloadMainView();
@@ -675,7 +647,7 @@ public class MainController extends BaseController
         // background color to normal
         if (selectedProductId > 0)
             productRows.get(selectedProductId)
-                       .setStyle(Constants.DESELECTED_ROW);
+                       .setStyle(Constants.DESELECTED_ROW + Constants.LINE_BELOW);
 
         selectedProductId = id;
         productRows.get(selectedProductId)
@@ -686,13 +658,13 @@ public class MainController extends BaseController
     private void sortProductById(ProductsWrapper productWrapper)
     {
         Comparator<Product> comparator;
-        if (productSort == SortColumn.SortByIdAsc)
+        if (productSort == Enums.SortColumn.SortByIdAsc)
         {
             // update visual
             productIdSort.setText(Constants.UP_ARROW_CHAR); // up arrow unicode
             comparator = Comparator.comparingInt(Product::getId);
         }
-        else if (productSort == SortColumn.SortByIdDesc)
+        else if (productSort == Enums.SortColumn.SortByIdDesc)
         {
             productIdSort.setText(Constants.DOWN_ARROW_CHAR); // down arrow unicode
             comparator = Comparator.comparingInt(Product::getId)
@@ -713,12 +685,12 @@ public class MainController extends BaseController
     private void sortProductByName(ProductsWrapper productWrapper)
     {
         Comparator<Product> comparator;
-        if (productSort == SortColumn.SortByNameAsc)
+        if (productSort == Enums.SortColumn.SortByNameAsc)
         {
             productNameSort.setText(Constants.UP_ARROW_CHAR);
             comparator = Comparator.comparing(Product::getName);
         }
-        else if (productSort == SortColumn.SortByNameDesc)
+        else if (productSort == Enums.SortColumn.SortByNameDesc)
         {
             productNameSort.setText(Constants.DOWN_ARROW_CHAR);
             comparator = Comparator.comparing(Product::getName)
@@ -738,12 +710,12 @@ public class MainController extends BaseController
     private void sortProductByInv(ProductsWrapper productWrapper)
     {
         Comparator<Product> comparator;
-        if (productSort == SortColumn.SortByInvAsc)
+        if (productSort == Enums.SortColumn.SortByInvAsc)
         {
             productInvSort.setText(Constants.UP_ARROW_CHAR);
             comparator = Comparator.comparingInt(Product::getStock);
         }
-        else if (productSort == SortColumn.SortByInvDesc)
+        else if (productSort == Enums.SortColumn.SortByInvDesc)
         {
             productInvSort.setText(Constants.DOWN_ARROW_CHAR);
             comparator = Comparator.comparingInt(Product::getStock)
@@ -763,12 +735,12 @@ public class MainController extends BaseController
     private void sortProductByPrice(ProductsWrapper productWrapper)
     {
         Comparator<Product> comparator;
-        if (productSort == SortColumn.SortByPriceAsc)
+        if (productSort == Enums.SortColumn.SortByPriceAsc)
         {
             productPriceSort.setText(Constants.UP_ARROW_CHAR);
             comparator = Comparator.comparing(Product::getPrice);
         }
-        else if (productSort == SortColumn.SortByPriceDesc)
+        else if (productSort == Enums.SortColumn.SortByPriceDesc)
         {
             productPriceSort.setText(Constants.DOWN_ARROW_CHAR);
             comparator = Comparator.comparing(Product::getPrice)
@@ -809,6 +781,8 @@ public class MainController extends BaseController
 
     private void populateProductsGrid(ObservableList<Product> products)
     {
+        selectedProductId = 0;
+
         ProductsWrapper wrapper = new ProductsWrapper(products);
 
         // Each of these check if it's supposed to sort
@@ -835,11 +809,10 @@ public class MainController extends BaseController
 
         HBoxBuilder hBoxBuilder = new HBoxBuilder();
         hBoxBuilder.setPrefHeight(28)
-                   .setPadding(new Insets(5))
-                   .setStyle(Constants.LINE_BELOW);
+                   .setPadding(new Insets(5));
 
         GridPaneBuilder gridPaneBuilder = new GridPaneBuilder();
-        gridPaneBuilder.setStyle(Constants.DESELECTED_ROW);
+        gridPaneBuilder.setStyle(Constants.DESELECTED_ROW + Constants.LINE_BELOW);
 
         // Filling in the grid pane
         for (int i = 0; i < wrapper.products.size(); i++)

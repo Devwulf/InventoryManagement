@@ -4,22 +4,123 @@ import InventoryManagement.Models.InHouse;
 import InventoryManagement.Models.Outsourced;
 import InventoryManagement.Models.Part;
 import InventoryManagement.Models.Product;
+import InventoryManagement.Utils.Enums;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 // Uses singleton implementation to mimic dbcontext in .NET
 // and so all views can have access to it
-// TODO: Implement authentication and authorization
 public class Inventory
 {
+    // Supposed to be a struct, so only getter methods
+    private class EntityEntry<TEntity>
+    {
+        private TEntity entity;
+        private TEntity updatedEntity;
+        private Enums.EntityState state;
+
+        public EntityEntry(TEntity entity, TEntity updatedEntity, Enums.EntityState state)
+        {
+            this.entity = entity;
+            this.updatedEntity = updatedEntity;
+            this.state = state;
+        }
+
+        public TEntity getEntity()
+        {
+            return entity;
+        }
+
+        public TEntity getUpdatedEntity()
+        {
+            return updatedEntity;
+        }
+
+        public Enums.EntityState getState()
+        {
+            return state;
+        }
+    }
+
     private ObservableList<Part> allParts;
     private ObservableList<Product> allProducts;
+
+    // Tracks the changes to the lists above, which could be
+    // applied later in the code using saveChanges()
+    private ArrayList<EntityEntry<Part>> trackedParts;
+    private ArrayList<EntityEntry<Product>> trackedProducts;
 
     // For auto_increment ids
     private int partCounter = 1;
     private int productCounter = 1;
+
+    // Save all the tracked changes
+    public void saveChanges()
+    {
+        for (EntityEntry<Part> entry : trackedParts)
+        {
+            Enums.EntityState state = entry.state;
+
+            if (state == Enums.EntityState.Added)
+                allParts.add(entry.entity);
+            else if (state == Enums.EntityState.Modified)
+            {
+                Part part = entry.entity;
+                Part selectedPart = entry.updatedEntity;
+
+                // id shouldn't be changeable after creating part
+                part.setName(selectedPart.getName());
+                part.setPrice(selectedPart.getPrice());
+                part.setStock(selectedPart.getStock());
+                part.setMin(selectedPart.getMin());
+                part.setMax(selectedPart.getMax());
+
+                if (part instanceof InHouse)
+                    ((InHouse) part).setMachineId(((InHouse) selectedPart).getMachineId());
+                else if (part instanceof Outsourced)
+                    ((Outsourced) part).setCompanyName(((Outsourced) selectedPart).getCompanyName());
+            }
+            else if (state == Enums.EntityState.Deleted)
+                allParts.remove(entry.entity);
+        }
+
+        for (EntityEntry<Product> entry : trackedProducts)
+        {
+            Enums.EntityState state = entry.state;
+
+            if (state == Enums.EntityState.Added)
+                allProducts.add(entry.entity);
+            else if (state == Enums.EntityState.Modified)
+            {
+                Product product = entry.entity;
+                Product newProduct = entry.updatedEntity;
+
+                product.setName(newProduct.getName());
+                product.setPrice(newProduct.getPrice());
+                product.setStock(newProduct.getStock());
+                product.setMin(newProduct.getMin());
+                product.setMax(newProduct.getMax());
+
+                product.clearAllAssociatedParts();
+                for (Part part : newProduct.getAllAssociatedParts())
+                    product.addAssociatedPart(part);
+            }
+            else if (state == Enums.EntityState.Deleted)
+                allProducts.remove(entry.entity);
+        }
+
+        trackedParts.clear();
+        trackedProducts.clear();
+    }
+
+    public void cancelChanges()
+    {
+        trackedParts.clear();
+        trackedProducts.clear();
+    }
 
     /* CRUD implementation below */
 
@@ -53,10 +154,18 @@ public class Inventory
         internalAddPart(partCounter++, newPart);
     }
 
+    public void addPart(Part newPart, boolean sameId)
+    {
+        if (sameId)
+            internalAddPart(newPart.getId(), newPart);
+        else
+            addPart(newPart);
+    }
+
     private void internalAddPart(int partId, Part newPart)
     {
         newPart.setId(partId);
-        allParts.add(newPart);
+        trackedParts.add(new EntityEntry<>(newPart, null, Enums.EntityState.Added));
     }
 
     public void updatePart(int index, Part selectedPart)
@@ -65,14 +174,12 @@ public class Inventory
     }
 
     // TODO: Ask professor if I should implement max > min
-    // TODO: Implement validation
     public void updatePartById(int partId, Part selectedPart)
     {
         Part part = lookupPart(partId);
         if (part == null)
-            throw new NullPointerException("Cannot find the part of id'" + partId + "'.");
+            throw new NullPointerException("Cannot find the part of id '" + partId + "'.");
 
-        // TODO: Implement changing type
         if (part instanceof InHouse &&
                 selectedPart instanceof Outsourced)
         {
@@ -105,23 +212,14 @@ public class Inventory
         }
         else
         {
-            // id shouldn't be changeable after creating part
-            part.setName(selectedPart.getName());
-            part.setPrice(selectedPart.getPrice());
-            part.setStock(selectedPart.getStock());
-            part.setMin(selectedPart.getMin());
-            part.setMax(selectedPart.getMax());
-
-            if (part instanceof InHouse)
-                ((InHouse) part).setMachineId(((InHouse) selectedPart).getMachineId());
-            else if (part instanceof Outsourced)
-                ((Outsourced) part).setCompanyName(((Outsourced) selectedPart).getCompanyName());
+            trackedParts.add(new EntityEntry<>(part, selectedPart, Enums.EntityState.Modified));
         }
     }
 
     public boolean deletePart(Part selectedPart)
     {
-        return allParts.remove(selectedPart);
+        trackedParts.add(new EntityEntry<>(selectedPart, null, Enums.EntityState.Deleted));
+        return true;
     }
 
     public boolean deletePartById(int partId)
@@ -166,7 +264,7 @@ public class Inventory
     private void internalAddProduct(int productId, Product newProduct)
     {
         newProduct.setId(productId);
-        allProducts.add(newProduct);
+        trackedProducts.add(new EntityEntry<>(newProduct, null, Enums.EntityState.Added));
     }
 
     public void updateProduct(int index, Product newProduct)
@@ -174,23 +272,19 @@ public class Inventory
 
     }
 
-    // TODO: Implement validation
     public void updateProductById(int productId, Product newProduct)
     {
         Product product = lookupProduct(productId);
         if (product == null)
-            throw new NullPointerException("Cannot find the product of id'" + productId + "'.");
+            throw new NullPointerException("Cannot find the product of id '" + productId + "'.");
 
-        product.setName(newProduct.getName());
-        product.setPrice(newProduct.getPrice());
-        product.setStock(newProduct.getStock());
-        product.setMin(newProduct.getMin());
-        product.setMax(newProduct.getMax());
+        trackedProducts.add(new EntityEntry<>(product, newProduct, Enums.EntityState.Modified));
     }
 
     public boolean deleteProduct(Product selectedProduct)
     {
-        return allProducts.remove(selectedProduct);
+        trackedProducts.add(new EntityEntry<>(selectedProduct, null, Enums.EntityState.Deleted));
+        return true;
     }
 
     public boolean deleteProductById(int productId)
@@ -211,6 +305,9 @@ public class Inventory
     {
         allParts = FXCollections.observableArrayList();
         allProducts = FXCollections.observableArrayList();
+
+        trackedParts = new ArrayList<>();
+        trackedProducts = new ArrayList<>();
     }
 
     public static Inventory getInstance()

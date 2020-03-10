@@ -32,5 +32,7 @@ public class SeedData
         inventory.addProduct(product2);
         inventory.addProduct(product3);
         inventory.addProduct(product4);
+
+        inventory.saveChanges();
     }
 }

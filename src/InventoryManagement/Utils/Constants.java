@@ -15,8 +15,8 @@ public final class Constants
 
     // Other styles
     public static final String LINE_BELOW = "-fx-border-style: solid; -fx-border-width: 0 0 1px 0; -fx-border-color: #dee2e6;";
-    public static final String SELECTED_ROW = "-fx-background-color: #4eb4eb";
-    public static final String DESELECTED_ROW = "-fx-background-color: #ffffff";
+    public static final String SELECTED_ROW = "-fx-background-color: #4eb4eb;";
+    public static final String DESELECTED_ROW = "-fx-background-color: #ffffff;";
 
     // Unicode characters
     public static final String FILTER_CHAR = "\u2200";

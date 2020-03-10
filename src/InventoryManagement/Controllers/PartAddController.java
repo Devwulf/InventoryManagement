@@ -29,8 +29,6 @@ public class PartAddController extends BaseController
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
-    // TODO: Add validation listeners to the text fields while typing
-
     // Listeners for the extra field
     private ChangeListener<String> extraFieldInHouseListener = (observable, oldValue, newValue) ->
     {
@@ -48,7 +46,7 @@ public class PartAddController extends BaseController
     private ChangeListener<String> extraFieldOutSourcedListener = (observable, oldValue, newValue) ->
     {
         if (Constants.NOT_EMPTY_PATTERN.matcher(newValue)
-                                .matches())
+                                       .matches())
         {
             extraField.setStyle(Constants.VALID_STYLE);
         }
@@ -66,38 +64,38 @@ public class PartAddController extends BaseController
 
         // Setting the textfield styles for validation
         nameField.textProperty()
-                  .addListener((observable, oldValue, newValue) ->
-                  {
-                      if (Constants.NOT_EMPTY_PATTERN.matcher(newValue)
-                                           .matches())
-                      {
-                          nameField.setStyle(Constants.VALID_STYLE);
-                      }
-                      else
-                      {
-                          nameField.setStyle(Constants.INVALID_STYLE);
-                      }
-                  });
+                 .addListener((observable, oldValue, newValue) ->
+                 {
+                     if (Constants.NOT_EMPTY_PATTERN.matcher(newValue)
+                                                    .matches())
+                     {
+                         nameField.setStyle(Constants.VALID_STYLE);
+                     }
+                     else
+                     {
+                         nameField.setStyle(Constants.INVALID_STYLE);
+                     }
+                 });
 
         invField.textProperty()
-                  .addListener((observable, oldValue, newValue) ->
-                  {
-                      if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                              .matches())
-                      {
-                          invField.setStyle(Constants.VALID_STYLE);
-                      }
-                      else
-                      {
-                          invField.setStyle(Constants.INVALID_STYLE);
-                      }
-                  });
+                .addListener((observable, oldValue, newValue) ->
+                {
+                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                      .matches())
+                    {
+                        invField.setStyle(Constants.VALID_STYLE);
+                    }
+                    else
+                    {
+                        invField.setStyle(Constants.INVALID_STYLE);
+                    }
+                });
 
         priceField.textProperty()
                   .addListener((observable, oldValue, newValue) ->
                   {
                       if (Constants.MONEY_PATTERN.matcher(newValue)
-                                       .matches())
+                                                 .matches())
                       {
                           priceField.setStyle(Constants.VALID_STYLE);
                       }
@@ -111,7 +109,7 @@ public class PartAddController extends BaseController
                 .addListener((observable, oldValue, newValue) ->
                 {
                     if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                            .matches())
+                                                      .matches())
                     {
                         maxField.setStyle(Constants.VALID_STYLE);
                     }
@@ -125,7 +123,7 @@ public class PartAddController extends BaseController
                 .addListener((observable, oldValue, newValue) ->
                 {
                     if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                            .matches())
+                                                      .matches())
                     {
                         minField.setStyle(Constants.VALID_STYLE);
                     }
@@ -135,7 +133,8 @@ public class PartAddController extends BaseController
                     }
                 });
 
-        extraField.textProperty().addListener(extraFieldInHouseListener);
+        extraField.textProperty()
+                  .addListener(extraFieldInHouseListener);
     }
 
     @FXML
@@ -145,8 +144,10 @@ public class PartAddController extends BaseController
         extraField.setPromptText("Machine ID");
         extraField.setText("");
 
-        extraField.textProperty().removeListener(extraFieldOutSourcedListener);
-        extraField.textProperty().addListener(extraFieldInHouseListener);
+        extraField.textProperty()
+                  .removeListener(extraFieldOutSourcedListener);
+        extraField.textProperty()
+                  .addListener(extraFieldInHouseListener);
     }
 
     @FXML
@@ -156,27 +157,35 @@ public class PartAddController extends BaseController
         extraField.setPromptText("Company Name");
         extraField.setText("");
 
-        extraField.textProperty().removeListener(extraFieldInHouseListener);
-        extraField.textProperty().addListener(extraFieldOutSourcedListener);
+        extraField.textProperty()
+                  .removeListener(extraFieldInHouseListener);
+        extraField.textProperty()
+                  .addListener(extraFieldOutSourcedListener);
     }
 
     @FXML
     public void handleSave()
     {
-        // TODO: Add validation
-        if (!Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText()).matches() ||
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(invField.getText()).matches() ||
-            !Constants.MONEY_PATTERN.matcher(priceField.getText()).matches() ||
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(maxField.getText()).matches() ||
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(minField.getText()).matches())
+        if (!Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText())
+                                        .matches() ||
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(invField.getText())
+                                               .matches() ||
+                !Constants.MONEY_PATTERN.matcher(priceField.getText())
+                                        .matches() ||
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(maxField.getText())
+                                               .matches() ||
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(minField.getText())
+                                               .matches())
             return;
 
         if (inHouseRadio.isSelected() &&
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(extraField.getText()).matches())
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(extraField.getText())
+                                               .matches())
             return;
 
         if (outSourcedRadio.isSelected() &&
-            !Constants.NOT_EMPTY_PATTERN.matcher(extraField.getText()).matches())
+                !Constants.NOT_EMPTY_PATTERN.matcher(extraField.getText())
+                                            .matches())
             return;
 
         try
@@ -203,8 +212,11 @@ public class PartAddController extends BaseController
 
             Inventory.getInstance()
                      .addPart(part);
+            Inventory.getInstance()
+                     .saveChanges();
 
-            ViewManager.getInstance().reloadMainView();
+            ViewManager.getInstance()
+                       .reloadMainView();
             stage.close();
         }
         catch (Exception e)
@@ -216,6 +228,8 @@ public class PartAddController extends BaseController
     @FXML
     public void handleCancel()
     {
+        Inventory.getInstance()
+                 .cancelChanges();
         stage.close();
     }
 }

@@ -150,7 +150,7 @@ public class PartModifyController extends BaseController
         {
             outSourcedRadio.setSelected(true);
             handleOutsourcedRadio();
-            extraField.setText(((Outsourced)part).getCompanyName());
+            extraField.setText(((Outsourced) part).getCompanyName());
         }
     }
 
@@ -183,21 +183,28 @@ public class PartModifyController extends BaseController
     @FXML
     public void handleSave()
     {
-        // TODO: Add validation
-        if (!Constants.NUMBERS_ONLY_PATTERN.matcher(idField.getText()).matches() ||
-            !Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText()).matches() ||
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(invField.getText()).matches() ||
-            !Constants.MONEY_PATTERN.matcher(priceField.getText()).matches() ||
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(maxField.getText()).matches() ||
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(minField.getText()).matches())
+        if (!Constants.NUMBERS_ONLY_PATTERN.matcher(idField.getText())
+                                           .matches() ||
+                !Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText())
+                                            .matches() ||
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(invField.getText())
+                                               .matches() ||
+                !Constants.MONEY_PATTERN.matcher(priceField.getText())
+                                        .matches() ||
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(maxField.getText())
+                                               .matches() ||
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(minField.getText())
+                                               .matches())
             return;
 
         if (inHouseRadio.isSelected() &&
-            !Constants.NUMBERS_ONLY_PATTERN.matcher(extraField.getText()).matches())
+                !Constants.NUMBERS_ONLY_PATTERN.matcher(extraField.getText())
+                                               .matches())
             return;
 
         if (outSourcedRadio.isSelected() &&
-            !Constants.NOT_EMPTY_PATTERN.matcher(extraField.getText()).matches())
+                !Constants.NOT_EMPTY_PATTERN.matcher(extraField.getText())
+                                            .matches())
             return;
 
         try
@@ -223,8 +230,11 @@ public class PartModifyController extends BaseController
 
             Inventory.getInstance()
                      .updatePartById(id, part);
+            Inventory.getInstance()
+                     .saveChanges();
 
-            ViewManager.getInstance().reloadMainView();
+            ViewManager.getInstance()
+                       .reloadMainView();
             stage.close();
         }
         catch (Exception e)
@@ -236,6 +246,8 @@ public class PartModifyController extends BaseController
     @FXML
     public void handleCancel()
     {
+        Inventory.getInstance()
+                 .cancelChanges();
         stage.close();
     }
 }

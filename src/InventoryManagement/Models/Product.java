@@ -109,4 +109,9 @@ public class Product
     {
         return associatedParts;
     }
+
+    public void clearAllAssociatedParts()
+    {
+        associatedParts.clear();
+    }
 }

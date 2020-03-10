@@ -16,7 +16,6 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        // TODO: Seed data here since we only want to seed it once
         SeedData.initialize();
 
         URL mainViewPath = getClass().getResource("Views/MainView.fxml");
@@ -27,6 +26,8 @@ public class Main extends Application
         // Add views
         viewManager.addView(ViewManager.ViewNames.PartAdd, "PartAddView");
         viewManager.addView(ViewManager.ViewNames.PartModify, "PartModifyView");
+        viewManager.addView(ViewManager.ViewNames.ProductAdd, "ProductAddView");
+        viewManager.addView(ViewManager.ViewNames.ProductModify, "ProductModifyView");
         viewManager.addView(ViewManager.ViewNames.Popup, "Popup");
     }
 

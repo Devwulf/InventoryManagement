@@ -28,8 +28,6 @@ public class ViewManager
         Popup
     }
 
-    private Stage stage = null;
-    private Scene scene = null;
     private HashMap<ViewNames, URL> views;
     private String defaultTitle;
 
@@ -40,9 +38,8 @@ public class ViewManager
     // Prevents changing of the primary stage once assigned
     public void initialize(Stage stage, URL mainViewPath, String title, double width, double height)
     {
-        if (this.stage == null)
+        if (stage != null)
         {
-            this.stage = stage;
             defaultTitle = title;
 
             try
@@ -50,12 +47,13 @@ public class ViewManager
                 FXMLLoader loader = new FXMLLoader(mainViewPath);
                 Parent root = loader.load();
                 mainController = loader.getController();
+                mainController.stage = stage;
 
-                this.stage.setTitle(title);
+                stage.setTitle(title);
 
-                this.scene = new Scene(root, width, height);
-                this.stage.setScene(this.scene);
-                this.stage.show();
+                Scene scene = new Scene(root, width, height);
+                stage.setScene(scene);
+                stage.show();
             }
             catch (Exception e)
             {
@@ -64,7 +62,6 @@ public class ViewManager
         }
     }
 
-    // TODO: Maybe load all the views in Views folder
     public void addView(ViewNames name, String viewName)
     {
         URL path = ViewManager.class.getResource(VIEWS_PATH + viewName + ".fxml");
@@ -133,12 +130,6 @@ public class ViewManager
     public void showConfirmPopup(String message, Runnable onConfirm) {
         PopupController controller = loadView(ViewNames.Popup, "Confirm");
         controller.showConfirmPopup(message, onConfirm);
-    }
-
-    public void setCursor(Cursor type)
-    {
-        if (scene != null)
-            scene.setCursor(type);
     }
 
     public void reloadMainView()
