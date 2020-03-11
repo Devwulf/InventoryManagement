@@ -78,9 +78,18 @@ public class ProductAddController extends BaseController
     private ObservableList<Part> localPartsList;
     private ObservableList<Part> localProductPartsList;
 
+    private int min = 0, max = 0;
+
     @FXML
     public void initialize()
     {
+        // initialize only once
+        // creates a copy of the real parts list
+        // Note: this won't create copies of the objects in the real list
+        localPartsList = FXCollections.observableArrayList(Inventory.getInstance()
+                                                                    .getAllParts());
+        localProductPartsList = FXCollections.observableArrayList();
+
         // Setting the textfield styles for validation
         nameField.textProperty()
                  .addListener((observable, oldValue, newValue) ->
@@ -99,8 +108,7 @@ public class ProductAddController extends BaseController
         invField.textProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
-                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                                      .matches())
+                    if (isInvValid(newValue))
                     {
                         invField.setStyle(Constants.VALID_STYLE);
                     }
@@ -113,8 +121,7 @@ public class ProductAddController extends BaseController
         priceField.textProperty()
                   .addListener((observable, oldValue, newValue) ->
                   {
-                      if (Constants.MONEY_PATTERN.matcher(newValue)
-                                                 .matches())
+                      if (isPriceValid(newValue))
                       {
                           priceField.setStyle(Constants.VALID_STYLE);
                       }
@@ -127,8 +134,7 @@ public class ProductAddController extends BaseController
         maxField.textProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
-                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                                      .matches())
+                    if (isMaxValid(newValue))
                     {
                         maxField.setStyle(Constants.VALID_STYLE);
                     }
@@ -141,8 +147,7 @@ public class ProductAddController extends BaseController
         minField.textProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
-                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                                      .matches())
+                    if (isMinValid(newValue))
                     {
                         minField.setStyle(Constants.VALID_STYLE);
                     }
@@ -156,18 +161,61 @@ public class ProductAddController extends BaseController
                         .setAll(Enums.SearchFilter.values());
         partSearchFilter.setValue(Enums.SearchFilter.Id);
 
-        // initialize only once
-        // creates a copy of the real parts list
-        // Note: this won't create copies of the objects in the real list
-        localPartsList = FXCollections.observableArrayList(Inventory.getInstance()
-                                                                    .getAllParts());
-        localProductPartsList = FXCollections.observableArrayList();
-
         populatePartsGrid();
         populateProductPartsGrid();
     }
 
+    private boolean isPriceValid(String newValue)
+    {
+        boolean matches = Constants.MONEY_PATTERN.matcher(newValue)
+                                                 .matches();
+        double price = matches ? Double.parseDouble(newValue) : 0;
+
+        if (!matches)
+            return false;
+
+        if (localProductPartsList.size() <= 0)
+            return false;
+
+        double partsPriceSum = 0;
+        for (Part part : localProductPartsList)
+            partsPriceSum += part.getPrice();
+
+        if (price < partsPriceSum)
+            return false;
+
+        return true;
+    }
+
+    private boolean isMinValid(String newValue)
+    {
+        boolean matches = Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                        .matches();
+        min = matches ? Integer.parseInt(newValue) : 0;
+
+        return matches && min <= max;
+    }
+
+    private boolean isMaxValid(String newValue)
+    {
+        boolean matches = Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                        .matches();
+        max = matches ? Integer.parseInt(newValue) : 0;
+
+        return matches && max >= min;
+    }
+
+    private boolean isInvValid(String newValue)
+    {
+        boolean matches = Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                        .matches();
+        int inv = matches ? Integer.parseInt(newValue) : 0;
+
+        return matches && inv >= min && inv <= max;
+    }
+
     @FXML
+
     public void handleHoverEnter()
     {
         stage.getScene()
@@ -184,17 +232,48 @@ public class ProductAddController extends BaseController
     @FXML
     public void handleSave()
     {
-        if (!Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText())
-                                        .matches() ||
-                !Constants.NUMBERS_ONLY_PATTERN.matcher(invField.getText())
-                                               .matches() ||
-                !Constants.MONEY_PATTERN.matcher(priceField.getText())
-                                        .matches() ||
-                !Constants.NUMBERS_ONLY_PATTERN.matcher(maxField.getText())
-                                               .matches() ||
-                !Constants.NUMBERS_ONLY_PATTERN.matcher(minField.getText())
-                                               .matches())
+        if (localProductPartsList.size() <= 0)
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The product must have at least one part.");
             return;
+        }
+
+        if (!Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText())
+                                        .matches())
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The product must have a name.");
+            return;
+        }
+
+        if (!isMaxValid(maxField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The product's max must be a number and must be >= min.");
+            return;
+        }
+
+        if (!isMinValid(minField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The product's min must be a number and must be <= max.");
+            return;
+        }
+
+        if (!isInvValid(invField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The product's inventory level must be a number, must be >= min, and must be <= max.");
+            return;
+        }
+
+        if (!isPriceValid(priceField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The product's price must be a number or in money format, and the total price must be >= the sum of the price of its parts.");
+            return;
+        }
 
         try
         {
@@ -228,9 +307,13 @@ public class ProductAddController extends BaseController
     @FXML
     public void handleCancel()
     {
-        Inventory.getInstance()
-                 .cancelChanges();
-        stage.close();
+        ViewManager.getInstance()
+                   .showConfirmPopup("There are unsaved changes. Cancel?", () ->
+                   {
+                       Inventory.getInstance()
+                                .cancelChanges();
+                       stage.close();
+                   });
     }
 
     public void reloadView()

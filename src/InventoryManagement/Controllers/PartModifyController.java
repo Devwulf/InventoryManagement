@@ -29,6 +29,8 @@ public class PartModifyController extends BaseController
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
+    private int min = 0, max = 0;
+
     // Listeners for the extra field
     private ChangeListener<String> extraFieldInHouseListener = (observable, oldValue, newValue) ->
     {
@@ -76,8 +78,7 @@ public class PartModifyController extends BaseController
         invField.textProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
-                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                                      .matches())
+                    if (isInvValid(newValue))
                     {
                         invField.setStyle(Constants.VALID_STYLE);
                     }
@@ -104,8 +105,7 @@ public class PartModifyController extends BaseController
         maxField.textProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
-                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                                      .matches())
+                    if (isMaxValid(newValue))
                     {
                         maxField.setStyle(Constants.VALID_STYLE);
                     }
@@ -118,8 +118,7 @@ public class PartModifyController extends BaseController
         minField.textProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
-                    if (Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
-                                                      .matches())
+                    if (isMinValid(newValue))
                     {
                         minField.setStyle(Constants.VALID_STYLE);
                     }
@@ -154,6 +153,33 @@ public class PartModifyController extends BaseController
         }
     }
 
+    private boolean isMinValid(String newValue)
+    {
+        boolean matches = Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                        .matches();
+        min = matches ? Integer.parseInt(newValue) : 0;
+
+        return matches && min <= max;
+    }
+
+    private boolean isMaxValid(String newValue)
+    {
+        boolean matches = Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                        .matches();
+        max = matches ? Integer.parseInt(newValue) : 0;
+
+        return matches && max >= min;
+    }
+
+    private boolean isInvValid(String newValue)
+    {
+        boolean matches = Constants.NUMBERS_ONLY_PATTERN.matcher(newValue)
+                                                        .matches();
+        int inv = matches ? Integer.parseInt(newValue) : 0;
+
+        return matches && inv >= min && inv <= max;
+    }
+
     @FXML
     public void handleInHouseRadio()
     {
@@ -183,29 +209,60 @@ public class PartModifyController extends BaseController
     @FXML
     public void handleSave()
     {
-        if (!Constants.NUMBERS_ONLY_PATTERN.matcher(idField.getText())
-                                           .matches() ||
-                !Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText())
-                                            .matches() ||
-                !Constants.NUMBERS_ONLY_PATTERN.matcher(invField.getText())
-                                               .matches() ||
-                !Constants.MONEY_PATTERN.matcher(priceField.getText())
-                                        .matches() ||
-                !Constants.NUMBERS_ONLY_PATTERN.matcher(maxField.getText())
-                                               .matches() ||
-                !Constants.NUMBERS_ONLY_PATTERN.matcher(minField.getText())
-                                               .matches())
+        if (!Constants.NOT_EMPTY_PATTERN.matcher(nameField.getText())
+                                        .matches())
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part must have a name.");
             return;
+        }
+
+        if (!isMaxValid(maxField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part's max must be a number and must be >= min.");
+            return;
+        }
+
+        if (!isMinValid(minField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part's min must be a number and must be <= max.");
+            return;
+        }
+
+        if (!isInvValid(invField.getText()))
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part's inventory level must be a number, must be >= min, and must be <= max.");
+            return;
+        }
+
+        if (!Constants.MONEY_PATTERN.matcher(priceField.getText())
+                                    .matches())
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part's price must be a number or in money format, and the total price must be >= the sum of the price of its parts.");
+            return;
+        }
 
         if (inHouseRadio.isSelected() &&
                 !Constants.NUMBERS_ONLY_PATTERN.matcher(extraField.getText())
                                                .matches())
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part's machine id must be a number, if in-house.");
             return;
+        }
 
         if (outSourcedRadio.isSelected() &&
                 !Constants.NOT_EMPTY_PATTERN.matcher(extraField.getText())
                                             .matches())
+        {
+            ViewManager.getInstance()
+                       .showWarningPopup("The part, if outsourced, must have a company name.");
             return;
+        }
 
         try
         {
@@ -246,8 +303,12 @@ public class PartModifyController extends BaseController
     @FXML
     public void handleCancel()
     {
-        Inventory.getInstance()
-                 .cancelChanges();
-        stage.close();
+        ViewManager.getInstance()
+                   .showConfirmPopup("There are unsaved changes. Cancel?", () ->
+                   {
+                       Inventory.getInstance()
+                                .cancelChanges();
+                       stage.close();
+                   });
     }
 }
