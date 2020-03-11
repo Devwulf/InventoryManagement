@@ -4,15 +4,12 @@ import InventoryManagement.Controllers.BaseController;
 import InventoryManagement.Controllers.MainController;
 import InventoryManagement.Controllers.PopupController;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 // Shorthand for FXMLLoader.load and everything that comes with it
 public class ViewManager

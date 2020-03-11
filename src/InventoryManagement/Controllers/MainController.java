@@ -5,7 +5,6 @@ import InventoryManagement.Models.Part;
 import InventoryManagement.Models.Product;
 import InventoryManagement.Services.ViewManager;
 import InventoryManagement.Utils.*;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.Comparator;

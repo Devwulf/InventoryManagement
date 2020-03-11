@@ -1,8 +1,6 @@
 package InventoryManagement.Controllers;
 
 import InventoryManagement.Data.Inventory;
-import InventoryManagement.Models.InHouse;
-import InventoryManagement.Models.Outsourced;
 import InventoryManagement.Models.Part;
 import InventoryManagement.Models.Product;
 import InventoryManagement.Services.ViewManager;
@@ -22,7 +20,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;

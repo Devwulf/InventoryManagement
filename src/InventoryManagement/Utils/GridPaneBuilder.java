@@ -2,7 +2,6 @@ package InventoryManagement.Utils;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.ConstraintsBase;
 import javafx.scene.layout.GridPane;
 
 public class GridPaneBuilder
